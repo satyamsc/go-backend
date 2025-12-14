@@ -1,12 +1,12 @@
 package handlers
 
 import (
-    "net/http"
-    "github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 func Docs(c *gin.Context) {
-    html := `<!doctype html>
+	html := `<!doctype html>
 <html>
   <head>
     <meta charset="utf-8" />
@@ -26,6 +26,5 @@ func Docs(c *gin.Context) {
     </script>
   </body>
 </html>`
-    c.Data(http.StatusOK, "text/html; charset=utf-8", []byte(html))
+	c.Data(http.StatusOK, "text/html; charset=utf-8", []byte(html))
 }
-
