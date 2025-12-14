@@ -5,6 +5,7 @@ import (
 	"go-backend/internal/middlewares"
 	"go-backend/internal/repositories"
 	"go-backend/internal/services"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -18,7 +19,16 @@ func New(db *gorm.DB) *gin.Engine {
 	svc := services.NewDeviceService(repo)
 	h := handlers.NewDeviceHandler(svc)
 	r.GET("/healthz", func(c *gin.Context) { c.Status(200) })
-	r.GET("/openapi.yaml", func(c *gin.Context) { c.File("openapi.yaml") })
+	r.GET("/openapi.yaml", func(c *gin.Context) {
+		paths := []string{"openapi.yaml", "docs/swagger/openapi.yaml"}
+		for _, p := range paths {
+			if _, err := os.Stat(p); err == nil {
+				c.File(p)
+				return
+			}
+		}
+		c.Status(404)
+	})
 	r.GET("/docs", handlers.Docs)
 	grp := r.Group("/devices")
 	{
