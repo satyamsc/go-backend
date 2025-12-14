@@ -1,0 +1,117 @@
+openapi: 3.0.3
+info:
+  title: Devices API
+  version: 1.0.0
+  description: REST API for managing device resources
+servers:
+  - url: http://localhost:8080
+paths:
+  /devices:
+    get:
+      summary: List devices
+      parameters:
+        - in: query
+          name: brand
+          schema:
+            type: string
+        - in: query
+          name: state
+          schema:
+            type: string
+            enum: [available, in-use, inactive]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Device'
+    post:
+      summary: Create device
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewDevice'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+  /devices/{id}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Get device
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+    put:
+      summary: Update device
+      description: Fully update device; created_at must remain unchanged
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Device'
+      responses:
+        '204': { description: No Content }
+        '422': { description: Validation error }
+    patch:
+      summary: Patch device
+      description: Partially update device; cannot update created_at; name/brand immutable if in-use
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: { type: string }
+                brand: { type: string }
+                state: { type: string, enum: [available, in-use, inactive] }
+      responses:
+        '204': { description: No Content }
+        '422': { description: Validation error }
+    delete:
+      summary: Delete device
+      responses:
+        '204': { description: No Content }
+        '409': { description: In-use devices cannot be deleted }
+components:
+  schemas:
+    Device:
+      type: object
+      required: [id, name, brand, state, created_at]
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        brand: { type: string }
+        state:
+          type: string
+          enum: [available, in-use, inactive]
+        created_at: { type: string, format: date-time }
+    NewDevice:
+      type: object
+      required: [name, brand, state]
+      properties:
+        name: { type: string }
+        brand: { type: string }
+        state:
+          type: string
+          enum: [available, in-use, inactive]
+

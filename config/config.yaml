@@ -1,0 +1,3 @@
+DB_PATH: ./data/devices.db
+SERVER_ADDR: :8080
+

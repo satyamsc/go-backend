@@ -1,0 +1,78 @@
+{
+  "info": {
+    "name": "Devices API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": { "method": "GET", "url": "{{baseUrl}}/healthz" },
+      "event": [
+        { "listen": "test", "script": { "type": "text/javascript", "exec": [
+          "pm.test('status 200', function () { pm.response.to.have.status(200); });"
+        ] } }
+      ]
+    },
+    {
+      "name": "Create Device",
+      "request": {
+        "method": "POST",
+        "header": [ { "key": "Content-Type", "value": "application/json" } ],
+        "url": "{{baseUrl}}/devices",
+        "body": { "mode": "raw", "raw": "{\n  \"name\": \"X\",\n  \"brand\": \"Acme\",\n  \"state\": \"available\"\n}" }
+      },
+      "event": [
+        { "listen": "test", "script": { "type": "text/javascript", "exec": [
+          "pm.test('status 201', function () { pm.response.to.have.status(201); });",
+          "var json = pm.response.json();",
+          "pm.collectionVariables.set('deviceId', json.id);"
+        ] } }
+      ]
+    },
+    {
+      "name": "List Devices",
+      "request": { "method": "GET", "url": "{{baseUrl}}/devices" },
+      "event": [
+        { "listen": "test", "script": { "type": "text/javascript", "exec": [
+          "pm.test('status 200', function () { pm.response.to.have.status(200); });"
+        ] } }
+      ]
+    },
+    {
+      "name": "Get Device",
+      "request": { "method": "GET", "url": "{{baseUrl}}/devices/{{deviceId}}" },
+      "event": [
+        { "listen": "test", "script": { "type": "text/javascript", "exec": [
+          "pm.test('status 200', function () { pm.response.to.have.status(200); });"
+        ] } }
+      ]
+    },
+    {
+      "name": "Patch Device State",
+      "request": {
+        "method": "PATCH",
+        "header": [ { "key": "Content-Type", "value": "application/json" } ],
+        "url": "{{baseUrl}}/devices/{{deviceId}}",
+        "body": { "mode": "raw", "raw": "{\n  \"state\": \"inactive\"\n}" }
+      },
+      "event": [
+        { "listen": "test", "script": { "type": "text/javascript", "exec": [
+          "pm.test('status 204', function () { pm.response.to.have.status(204); });"
+        ] } }
+      ]
+    },
+    {
+      "name": "Delete Device",
+      "request": { "method": "DELETE", "url": "{{baseUrl}}/devices/{{deviceId}}" },
+      "event": [
+        { "listen": "test", "script": { "type": "text/javascript", "exec": [
+          "pm.test('status 204', function () { pm.response.to.have.status(204); });"
+        ] } }
+      ]
+    }
+  ]
+}
+
