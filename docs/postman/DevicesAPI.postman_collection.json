@@ -51,6 +51,20 @@
       ]
     },
     {
+      "name": "Update Device",
+      "request": {
+        "method": "PUT",
+        "header": [ { "key": "Content-Type", "value": "application/json" } ],
+        "url": "{{baseUrl}}/devices/{{deviceId}}",
+        "body": { "mode": "raw", "raw": "{\n  \"name\": \"X\",\n  \"brand\": \"Acme2\",\n  \"state\": \"available\"\n}" }
+      },
+      "event": [
+        { "listen": "test", "script": { "type": "text/javascript", "exec": [
+          "pm.test('status 204', function () { pm.response.to.have.status(204); });"
+        ] } }
+      ]
+    },
+    {
       "name": "Patch Device State",
       "request": {
         "method": "PATCH",
@@ -75,4 +89,3 @@
     }
   ]
 }
-
