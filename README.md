@@ -108,4 +108,19 @@ curl -sS 'http://localhost:8080/devices?brand=Acme&state=available'
 - Integration tests hit HTTP handlers and routes in `test/integration`
 - Unit tests cover services and models in `test/unit`
 
+## Production To-Do
+- Observability:
+  - Logging: structured logging with JSON output
+  - Metrics: Prometheus metrics endpoint
+  - Tracing: OpenTelemetry tracing
+- Security:
+  - OAuth2/OIDC: secure authentication and authorization
+- Delivery:
+  - automated CI/CD: Jenkins CI/CD pipeline
+- External Configuration: 
+  - Use environment variables for configuration, Secrets file for sensitive data
+- Quality & ops:
+  - contract/integration/e2e tests: ensure API contract and integration with external services
+  - monitoring: set up alerting for critical metrics
+
 
