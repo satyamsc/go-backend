@@ -15,10 +15,10 @@ tidy:
 	go mod tidy
 
 docker-build:
-    docker build -t go-backend:latest .
+	docker build -t go-backend:latest .
 
 docker-run:
-    docker run --rm -p 8080:8080 -v $$(pwd)/data:/data go-backend:latest
+	docker run --rm -p 8080:8080 -v $$(pwd)/data:/data go-backend:latest
 
 .PHONY: postman
 postman:
